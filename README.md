@@ -16,6 +16,7 @@ The easiest way to contribute is by editing the files directly. You can then use
   - [validate.js](https://rickharrison.github.io/validate.js/)
   - [bootbox.js](http://bootboxjs.com)
   - [jQuery Character Counter](https://github.com/dtisgodsson/jquery-character-counter)
+  - [Parsedown](http://parsedown.org)
 
 ### Repository Structure
 
