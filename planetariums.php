@@ -28,22 +28,45 @@
         <div class="page-header">
             <h1>Planetariums</h1>
         </div>
+        
         <!-- Content goes in this div -->
-
-
-        <div class="col-md-10 col-md-offset-1 well">
-            <p>In the planetarium, presenters teach the names of several constellations which are visible in the night sky at that time of
-            year, and show how to find them using ‘pointer stars’ found in the Big Dipper. The presentation includes short lessons on the
-            colours of stars, and the brightness at which we perceive them, based on their size, distance and luminosity. Lenses
-            representing specific planets can also be inserted into our projection to depict the movement of planets in the night sky, and
-            to demonstrate retrograde motion. The dome can be set up in a large room (such as a gymnasium, auditorium stage, or mid-sized
-            classroom) with about 7 meters of floor space, and 3 meters of clearance from the ceiling. Planetariums are easily our most
-            popular presentation, and are suitable for audiences of all ages. (45-60 min.)</p>
+        <div class="col-md-10 col-md-offset-1 well" id="content-container">
         </div>
     </div>
 
 
     <footer class="footer">
     </footer>
+    
+    <script>
+        <?php
+        
+        // Include Parsedown library
+        include 'php/Parsedown.php';
+        
+        // Create Parsedown object
+        $Parsedown = new Parsedown();
+        
+        // Insert planetarium content into page
+        
+        // Open file
+        $myFile = fopen("markdownPages/planetariums.MD", "r") or die("Unable to open file!");
+        
+        // Read file
+        $fileText = fread($myFile, filesize("markdownPages/planetariums.MD"));
+        
+        // Parse Markdown into HTML using Parsedown
+        $fileText = $Parsedown->text($fileText);
+        
+        // Replace newlines with <br>
+        $fileText = preg_replace("/\r\n|\r|\n/",'<br/>',$fileText);
+        
+        // Add to page
+        echo "$('#content-container').append('" .  $fileText . "');";
+        
+        // Close file
+        fclose($myFile);
+        ?>
+    </script>
 </body>
 </html>

@@ -36,11 +36,8 @@
             <div class="col-md-6">
                 <div id="map"></div>
             </div>
-            <div class="col-md-6">
-                <p id="joinUsText">All high school age students students in the Ottawa area are eligible to join Spacesim. Work sessions are held in room W027
-            on the first floor of 440 Albert Street (the Ottawa Technical High School Building) from 3:30 pm - 10 pm. Members are not
-            obliged to stay for the entirety of a work session, and are free to come and go as they please. If you have any questions,
-            please email us at ocespacesim@gmail.com.</p>
+            <div class="col-md-6" id="content-container">
+                
             </div>
             <br>
             
@@ -111,6 +108,38 @@
         label: 'L'
     });
     }
+    
+    // Put in Markdown
+    <?php
+        
+        // Include Parsedown library
+        include 'php/Parsedown.php';
+        
+        // Create Parsedown object
+        $Parsedown = new Parsedown();
+        
+        // Insert planetarium content into page
+        
+        // Open file
+        $myFile = fopen("markdownPages/joinUs.MD", "r") or die("Unable to open file!");
+        
+        // Read file
+        $fileText = fread($myFile, filesize("markdownPages/joinUs.MD"));
+        
+        // Parse Markdown into HTML using Parsedown
+        $fileText = $Parsedown->text($fileText);
+        
+        // Replace newlines with <br>
+        $fileText = preg_replace("/\r\n|\r|\n/",'<br/>',$fileText);
+        
+        // Add to page
+        echo '$("#content-container").append("' .  $fileText . '");';
+        
+        // Close file
+        fclose($myFile);
+        ?>
+        
+        // Apply text styling
+        $("#content-container p").attr('id', 'joinUsText');
     </script>
-</body>
 </html>

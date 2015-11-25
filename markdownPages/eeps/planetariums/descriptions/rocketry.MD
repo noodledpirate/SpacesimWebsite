@@ -1,0 +1,1 @@
+In our rocketry demonstration, presenters will teach their audience about means of propulsion, and the fundamentals of orbits. A scale model of the Saturn V rocket is used to illustrate how the stages of rockets work. (20-30 min.)
