@@ -31,23 +31,10 @@
         <!-- Content goes in this div -->
 
 
-        <div class="col-md-10 col-md-offset-1 well">
-            <p>Education is a fundamental part of Spacesim, and is promoted both internally, within our club, and externally through our
-            Elementary Education Programs.</p>
+        <div class="col-md-10 col-md-offset-1 well content-container">
+            <span id="main-content-container">
 
-
-            <p>EEPs are given by Spacesim members, and are exceptionally fun and engaging for both their audiences and presenters.
-            Demonstrations take concepts of astronomy, physics and space travel, and break them down for younger audiences in ways that are
-            easier to understand, and make learning enjoyable.</p>
-
-
-            <p>Presentations can be adjusted to cover specific topics, and for children of different ages and levels of understanding.
-            These presentations are available for elementary school classes, day camps, and other private groups. Below is a list of
-            demonstrations we currently offer, including the average amount of time each takes.</p>
-
-
-            <p>For more information, or to request an EEPs or planetarium presentation, please contact us through our contact form which is
-            located <a href="contact.html">here</a>.</p>
+            </span>
             <br>
 
 
@@ -107,5 +94,84 @@
 
     <footer class="footer">
     </footer>
+
+    <script>
+        <?php
+
+        // Include Parsedown library
+        include 'php/Parsedown.php';
+
+        // Create Parsedown object
+        $Parsedown = new Parsedown();
+
+        // Add main EEPS content
+
+        // Open file
+        $mainFile = fopen("markdownPages/eeps/main.MD", "r") or die("Unable to open file!");
+
+        // Read file
+        $mainText = fread($mainFile, filesize("markdownPages/eeps/main.MD"));
+
+        // Parse Markdown into HTML using Parsedown
+        $mainText = $Parsedown->text($mainText);
+
+        // Replace newlines with <br>
+        $mainText = preg_replace("/\r\n|\r|\n/",'<br/>', $mainText);
+
+        // Add to page
+        echo '$("#main-content-container").append("' .  $mainText . '");
+        ';
+
+        // Close file
+        fclose($mainFile);
+
+        // List all title files
+        $titleDir = "markdownPages/eeps/planetariums/titles/*";
+        $titles = [];
+        foreach(glob($titleDir) as $file) {
+          if (!is_dir($file)) {
+            array_push($titles, basename($file));
+          }
+        }
+
+        // List all the description files
+        $descriptionDir = "markdownPages/eeps/planetariums/descriptions/*";
+        $descriptions = [];
+        foreach(glob($descriptionDir) as $file) {
+          if (!is_dir($file)) {
+            array_push($descriptions, basename($file));
+          }
+        }
+
+        // Put titles and descriptions into page
+        $count = 0;
+        foreach($titles as $val) {
+
+          // Add title
+          $titleFile = fopen("markdownPages/eeps/planetariums/titles/" . $val, "r") or die("Unable to open file!");
+          $titleText = fread($titleFile, filesize("markdownPages/eeps/planetariums/titles/" . $val));
+          $titleText = $Parsedown->text($titleText);
+          $titleText = preg_replace("/\r\n|\r|\n/",'<br/>', $titleText);
+          echo "$('#content-container').append('<div class=\"panel panel-default\">');
+          ";
+          echo "$('#content-container').append('<div class=\"panel-heading\">";
+          echo $titleText . "');";
+          echo "$('#content-container').append('</div>');";
+          echo "$('#content-container').append('<div class=\"panel-body\">";
+
+          // Add description
+          $descriptionFile = fopen("markdownPages/eeps/planetariums/descriptions/" . $descriptions[$count], "r") or die("Unable to open file!");
+          $descriptionText = fread($descriptionFile, filesize("markdownPages/eeps/planetariums/descriptions/" . $descriptions[$count]));
+          $descriptionText = $Parsedown->text($titleText);
+          $descriptionText = preg_replace("/\r\n|\r|\n/",'<br/>', $descriptionText);
+          echo $descriptionText . "');";
+          echo "$('#content-container').append('</div></div>');
+          ";
+
+          // Increment counter
+          $count++;
+        }
+        ?>
+    </script>
 </body>
 </html>
