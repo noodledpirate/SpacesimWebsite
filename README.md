@@ -25,7 +25,7 @@ The easiest way to contribute is by editing the files directly. You can then use
   - `js` - Javascript files
   - `css` - Stylesheets
   - `php` - PHP Scripts
-
+ 
 ### Current State
 
  The website is still undergoing it's main development. As such, a large portion of the content is lacking. New features and content will be added on a regular basis.
